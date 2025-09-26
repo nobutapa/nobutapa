@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NOBUTAPA</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    #scene {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+    #overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      pointer-events: none;
+      padding: min(12vh, 12vw) min(5vw, 40px) min(18vh, 18vw);
+    }
+    #page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: max(4vh, 20px);
+    }
+    /* Mode C: lignes centrées individuellement */
+    #page.mode-c {
+      align-items: center;
+    }
+    .page-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: max(4vh, 20px);
+      max-width: 100%;
+    }
+    .line {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 600ms ease, transform 600ms ease;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.18;
+      color: transparent;
+      background-image: linear-gradient(180deg,
+        #fff8d8 0%,
+        #ffe88a 20%,
+        #ffd700 42%,
+        #ffb300 70%,
+        #995e00 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-stroke: 3px #cc0000;
+      text-stroke: 3px #cc0000;
+      text-shadow:
+        0 2px 6px rgba(255, 215, 0, 0.45),
+        0 0 18px rgba(255, 160, 0, 0.35),
+        0 0 38px rgba(255, 120, 0, 0.18);
+      letter-spacing: 0.015em;
+    }
+    .line.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (max-width: 480px) {
+      #overlay { padding: 10vh 4vw 20vh; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="overlay" aria-live="polite" aria-atomic="true">
+    <div id="page"></div>
+  </div>
+  <script>
+    const linePauseMs = 1000;
+    const pagePauseMs = 5000;
+    const textSpec = "C2Beyond traditional/agile approaches:|2Waterfall, V-Models, Scrum, Kanban,|2Lean, XP, SAFe, RAD, etc.#C6Embrace the|7NOBUTAPA|6philosophy#L7NOthing|7BUt|7TAlent &|7PAssion ;-)";
+    const loopPages = true;
+    const canvas = document.getElementById('scene');
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0, DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+    let terraceTexture = [];
+    function resize() {
+      W = Math.floor(window.innerWidth);
+      H = Math.floor(window.innerHeight);
+      canvas.width = Math.floor(W * DPR);
+      canvas.height = Math.floor(H * DPR);
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      generateTerraceTexture();
+    }
+    function generateTerraceTexture() {
+      terraceTexture = [];
+      const deckTopY = H * 0.72;
+      const deckBottomY = H;
+      const textureStrokes = Math.floor(W * H * 0.00016);
+      for (let i = 0; i < textureStrokes; i++) {
+        const x = Math.random() * W;
+        const y = deckTopY + Math.random() * (deckBottomY - deckTopY);
+        const isLongStroke = Math.random() > 0.7;
+        const segmentLength = isLongStroke ? 
+          Math.random() * 25 + 20 : 
+          Math.random() * 18 + 10;  
+        const gapSize = Math.random() * 4 + 2;
+        const baseAngle = (Math.random() - 0.5) * Math.PI * 0.05;
+        const depthProgress = (y - deckTopY) / (deckBottomY - deckTopY);
+        const baseWidth = 0.8 + depthProgress * 2.2; 
+        const width = baseWidth + Math.random() * 0.5;
+        const grayVariations = [200, 210, 220, 230, 240, 250];
+        const grayValue = grayVariations[Math.floor(Math.random() * grayVariations.length)];
+        const alpha = 0.06 + Math.random() * 0.08;
+        const x2_seg1 = x + Math.cos(baseAngle) * segmentLength;
+        const y2_seg1 = y + Math.sin(baseAngle) * segmentLength;
+        const x1_seg2 = x2_seg1 + gapSize;
+        const y1_seg2 = y2_seg1 + (Math.random() - 0.5) * 1; 
+        const x2_seg2 = x1_seg2 + segmentLength;
+        const y2_seg2 = y1_seg2 + Math.sin(baseAngle) * segmentLength;
+        if (x2_seg1 >= 0 && x2_seg1 <= W && y2_seg1 >= deckTopY && y2_seg1 <= deckBottomY &&
+            x2_seg2 >= 0 && x2_seg2 <= W && y2_seg2 >= deckTopY && y2_seg2 <= deckBottomY) {
+          terraceTexture.push({
+            x1: x,
+            y1: y,
+            x2: x2_seg1,
+            y2: y2_seg1,
+            width: width,
+            grayValue: grayValue,
+            alpha: alpha
+          });
+          terraceTexture.push({
+            x1: x1_seg2,
+            y1: y1_seg2,
+            x2: x2_seg2,
+            y2: y2_seg2,
+            width: width,
+            grayValue: grayValue,
+            alpha: alpha
+          });
+        }
+      }
+    }
+    window.addEventListener('resize', () => { resize(); initClouds(); });
+    resize();
+    let startTs = performance.now();
+    let clouds = [];
+    function initClouds() {
+      clouds = [];
+      const count = Math.round(6 + W / 350);
+      for (let i = 0; i < count; i++) {
+        const scale = 0.6 + Math.random() * 1.4;
+        const y = Math.random() * (H * 0.40) + H * 0.02; 
+        const x = Math.random() * W;
+        const speed = (0.006 + Math.random() * 0.012) * (0.6 + 0.4 * scale);
+        const shade = 150 + Math.floor(Math.random() * 40); 
+        clouds.push({ x0: x, y, scale, speed, shade });
+      }
+    }
+    function drawCloud(ctx, cx, cy, s, shade) {
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = `rgb(${shade},${shade},${shade})`;
+      ctx.beginPath();
+      const r = 24 * s;
+      const parts = [
+        { dx: -2.2 * r, dy: 0.2 * r, rx: 1.1 * r, ry: 0.7 * r },
+        { dx: -1.0 * r, dy: -0.2 * r, rx: 1.4 * r, ry: 0.9 * r },
+        { dx: 0.2 * r, dy: -0.3 * r, rx: 1.6 * r, ry: 1.0 * r },
+        { dx: 1.6 * r, dy: 0.0 * r, rx: 1.1 * r, ry: 0.7 * r },
+        { dx: 0.8 * r, dy: 0.4 * r, rx: 1.0 * r, ry: 0.6 * r }
+      ];
+      for (let i = 0; i < parts.length; i++) {
+        const p = parts[i];
+        ctx.ellipse(cx + p.dx, cy + p.dy, p.rx, p.ry, 0, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      ctx.globalAlpha = 0.15;
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + 0.6 * r, 2.8 * r, 0.5 * r, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    function renderClouds(t) {
+      for (const c of clouds) {
+        const wrap = W + 400;
+        let x = (c.x0 + c.speed * t * W) % wrap;
+        x -= 200;
+        drawCloud(ctx, x, c.y, c.scale, c.shade);
+      }
+    }
+    initClouds();
+    function drawScene(ts) {
+      const t = (ts - startTs) / 1000;
+      const horizonY = H * 0.50;
+      const sunR = Math.min(W, H) * 0.085;
+      const sunX = W * 0.5;
+      const sunY = horizonY - sunR * 1.1;
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+      skyGrad.addColorStop(0, '#0a1446');
+      skyGrad.addColorStop(0.55, '#4b2b7f');
+      skyGrad.addColorStop(0.8, '#ff6a00');
+      skyGrad.addColorStop(1, '#ffd36b');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, horizonY);
+      const glowR = sunR * 2.2;
+      const sunGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, glowR);
+      sunGlow.addColorStop(0.0, 'rgba(255, 235, 120, 0.85)');
+      sunGlow.addColorStop(0.35, 'rgba(255, 170, 60, 0.65)');
+      sunGlow.addColorStop(1.0, 'rgba(255, 110, 0, 0.0)');
+      ctx.fillStyle = sunGlow;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, glowR, 0, Math.PI * 2);
+      ctx.fill();
+      const sunGrad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, sunR);
+      sunGrad.addColorStop(0, '#fffef0');
+      sunGrad.addColorStop(0.7, '#fff8d0');
+      sunGrad.addColorStop(1, '#ffe8a0');
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
+      ctx.fill();
+      renderClouds(t);
+      const seaGrad = ctx.createLinearGradient(0, horizonY, 0, H);
+      seaGrad.addColorStop(0, '#4a9fff');
+      seaGrad.addColorStop(0.6, '#1f5fbf');
+      seaGrad.addColorStop(1, '#0a2456');
+      ctx.fillStyle = seaGrad;
+      const deckTopY = H * 0.72;
+      const seaBottomY = deckTopY;
+      ctx.fillRect(0, horizonY, W, seaBottomY - horizonY);
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      for (let y = horizonY + 1; y <= seaBottomY - 1; y += 3) {
+        const p = (y - horizonY) / (H - horizonY);
+        const amp = 6 + 20 * p;
+        const freq = 0.055 + 0.02 * p;
+        const phase = t * (0.8 + 0.6 * p);
+        const wobble = Math.sin(y * freq + phase) * amp;
+        const width = (sunR * (1.2 + 3.2 * p)) * 0.5;
+        const alpha = 0.4 * (1 - p) + 0.08;
+        ctx.fillStyle = `rgba(255, 235, 80, ${alpha.toFixed(3)})`;
+        ctx.fillRect(sunX - width + wobble, y, width * 2, 1.8);
+      }
+      ctx.restore();
+      ctx.save();
+      ctx.globalCompositeOperation = 'soft-light';
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      for (let y = horizonY + 6; y <= seaBottomY - 1; y += 12) {
+        const p = (y - horizonY) / (H - horizonY);
+        const amp = 3 + 12 * p;
+        const k = 0.018 + 0.01 * p;
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += 6) {
+          const yy = y + Math.sin((x * k) + t * (0.8 + p)) * amp * 0.5;
+          if (x === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+      const deckBottomY = H;
+      const deckLeftInset = 0;
+      const deckRightInset = 0;
+      ctx.save();
+      const deckGrad = ctx.createLinearGradient(0, deckTopY, 0, deckBottomY);
+      deckGrad.addColorStop(0, '#b8bdc3');
+      deckGrad.addColorStop(0.5, '#6f757c');
+      deckGrad.addColorStop(1, '#2a2f35');
+      ctx.fillStyle = deckGrad;
+      ctx.beginPath();
+      ctx.moveTo(deckLeftInset, deckTopY);
+      ctx.lineTo(W - deckRightInset, deckTopY);
+      ctx.lineTo(W, deckBottomY);
+      ctx.lineTo(0, deckBottomY);
+      ctx.closePath();
+      ctx.fill();
+      const terrVignette = ctx.createLinearGradient(0, deckTopY, 0, deckBottomY);
+      terrVignette.addColorStop(0, 'rgba(0,0,0,0.05)');
+      terrVignette.addColorStop(1, 'rgba(0,0,0,0.12)');
+      ctx.fillStyle = terrVignette;
+      ctx.fillRect(0, deckTopY, W, deckBottomY - deckTopY);
+      ctx.save();
+      for (const stroke of terraceTexture) {
+        ctx.strokeStyle = `rgba(${stroke.grayValue}, ${stroke.grayValue}, ${stroke.grayValue}, ${stroke.alpha})`;
+        ctx.lineWidth = stroke.width;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(stroke.x1, stroke.y1);
+        ctx.lineTo(stroke.x2, stroke.y2);
+        ctx.stroke();
+      }
+      ctx.restore();
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.lineWidth = 1.2;
+      const totalLines = 35;
+      const vanishingZoneCenter = W * 0.5;
+      const vanishingZoneWidth = W * 0.08;
+      for (let i = 0; i <= totalLines; i++) {
+        const t = i / totalLines;
+        const expandedT = 0.5 + (t - 0.5) * 1.3;
+        const xBottom = expandedT * W;
+        const centerDistance = Math.abs(t - 0.5) * 2;
+        const compressionFactor = 0.25 + centerDistance * 0.35;
+        const zoneOffset = Math.sin(t * Math.PI * 4) * vanishingZoneWidth * 0.3;
+        const vanishingCenter = vanishingZoneCenter + zoneOffset;
+        const xTop = vanishingCenter + (t - 0.5) * W * compressionFactor;
+        if (xBottom >= 0 && xBottom <= W) {
+          ctx.beginPath();
+          ctx.moveTo(xBottom, deckBottomY);
+          ctx.lineTo(xTop, deckTopY);
+          ctx.stroke();
+        }
+      }
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.lineWidth = 1;
+      const rows = 14;
+      for (let i = 1; i <= rows; i++) {
+        const r = i / rows;
+        const rr = Math.pow(r, 1.1);
+        const y = deckTopY + rr * (deckBottomY - deckTopY);
+        ctx.beginPath();
+        if (r <= 0.5) {
+          const progress = r / 0.5;
+          const topWidth = W * 0.3;
+          const midWidth = W * 0.8;
+          const currentWidth = topWidth + progress * (midWidth - topWidth);
+          const leftX = (W - currentWidth) / 2;
+          const rightX = (W + currentWidth) / 2;
+          ctx.moveTo(leftX, y);
+          ctx.lineTo(rightX, y);
+        } else {
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+        }
+        ctx.stroke();
+      }
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      const postX1 = W * 0.38;
+      const postW = Math.max(24, W * 0.04);
+      const postX2 = W * 0.62 - postW;
+      const postH = Math.max(60, H * 0.52);
+      const baseY = deckTopY + (deckBottomY - deckTopY) * 0.12;
+      const shadowLength = H * 0.25;
+      const shadowAngle = Math.PI * 0.25;
+      const shadowOffsetX = Math.cos(shadowAngle) * shadowLength;
+      const shadowOffsetY = Math.sin(shadowAngle) * shadowLength * 0.6;
+      ctx.beginPath();
+      ctx.moveTo(postX1, baseY);
+      ctx.lineTo(postX1 + postW + 8, baseY);
+      ctx.lineTo(postX1 + postW + 8 + shadowOffsetX, baseY + shadowOffsetY);
+      ctx.lineTo(postX1 + shadowOffsetX, baseY + shadowOffsetY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(postX2 - 8, baseY);
+      ctx.lineTo(postX2 + postW, baseY);
+      ctx.lineTo(postX2 + postW + shadowOffsetX, baseY + shadowOffsetY);
+      ctx.lineTo(postX2 - 8 + shadowOffsetX, baseY + shadowOffsetY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      const lightGrad = ctx.createLinearGradient(0, deckTopY, shadowOffsetX * 2, deckTopY + shadowOffsetY * 2);
+      lightGrad.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
+      lightGrad.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
+      ctx.fillStyle = lightGrad;
+      ctx.fillRect(0, deckTopY, W, deckBottomY - deckTopY);
+      ctx.restore();
+      ctx.restore();
+      const postColor = '#2a150a';
+      ctx.fillStyle = postColor;
+      ctx.fillStyle = postColor;
+      ctx.fillRect(postX1, baseY - postH, postW, postH);
+      ctx.fillStyle = '#1a0f07';
+      ctx.beginPath();
+      ctx.moveTo(postX1 + postW, baseY - postH);
+      ctx.lineTo(postX1 + postW + 8, baseY - postH - 4);
+      ctx.lineTo(postX1 + postW + 8, baseY - 4);
+      ctx.lineTo(postX1 + postW, baseY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#3a1f0e';
+      ctx.beginPath();
+      ctx.moveTo(postX1, baseY - postH);
+      ctx.lineTo(postX1 + 8, baseY - postH - 4);
+      ctx.lineTo(postX1 + postW + 8, baseY - postH - 4);
+      ctx.lineTo(postX1 + postW, baseY - postH);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = postColor;
+      ctx.fillRect(postX2, baseY - postH, postW, postH);
+      ctx.fillStyle = '#1a0f07';
+      ctx.beginPath();
+      ctx.moveTo(postX2, baseY - postH);
+      ctx.lineTo(postX2 - 8, baseY - postH - 4);
+      ctx.lineTo(postX2 - 8, baseY - 4);
+      ctx.lineTo(postX2, baseY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#3a1f0e';
+      ctx.beginPath();
+      ctx.moveTo(postX2, baseY - postH);
+      ctx.lineTo(postX2 - 8, baseY - postH - 4);
+      ctx.lineTo(postX2 + postW - 8, baseY - postH - 4);
+      ctx.lineTo(postX2 + postW, baseY - postH);
+      ctx.closePath();
+      ctx.fill();
+      const beamY = (baseY - postH) + postH * 0.1;
+      ctx.fillRect(postX1 - 6, beamY, (postX2 + postW + 6) - (postX1 - 6), Math.max(8, H * 0.012));
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.shadowBlur = 8;
+      const fontSize = Math.max(12, postH * 0.085);
+      ctx.font = `${fontSize}px "Hiragino Mincho ProN", "Songti SC", "STKaiTi", serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      function drawVerticalLabel(text, centerX, topY, bottomY) {
+        const n = text.length;
+        const span = Math.max(0, bottomY - topY);
+        const step = span / (n + 1);
+        for (let i = 0; i < n; i++) {
+          const y = topY + (i + 1) * step;
+          ctx.fillText(text[i], centerX, y);
+        }
+      }
+      const leftCenter = postX1 + postW * 0.5;
+      const rightCenter = postX2 + postW * 0.5;
+      const labelTop = (baseY - postH) + Math.max(8, H * 0.01);
+      const labelBottom = baseY - Math.max(10, H * 0.02);
+      drawVerticalLabel('武道精神仁義礼智信', leftCenter, labelTop, labelBottom);
+      drawVerticalLabel('礼義仁智信忠孝勇', rightCenter, labelTop, labelBottom);
+      ctx.restore();
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      ctx.fillRect(0, horizonY - 1, postX1 - 8, 2);
+      ctx.fillRect(postX2 + postW + 8, horizonY - 1, W - (postX2 + postW + 8), 2);
+    }
+    function loop(ts) {
+      drawScene(ts);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+    const pageEl = document.getElementById('page');
+    function parsePages(spec) {
+      return spec.split('#')
+        .map(p => p.trim())
+        .map(raw => {
+          if (!raw) return null;
+          const fc = raw[0];
+          if (!(fc === 'L' || fc === 'C' || fc === 'l' || fc === 'c')) {
+            console.warn('Page skipped: missing required alignment marker (L/C)');
+            return null;
+          }
+          const align = fc.toUpperCase();
+          let rest = raw.slice(1);
+          if (rest.startsWith(' ')) rest = rest.slice(1);
+          const lines = rest.split('|').map(s => {
+            s = s.trim();
+            if (!s) return null;
+            const sizeMatch = s.match(/^([0-9])(.*)$/);
+            if (sizeMatch) {
+              return { size: parseInt(sizeMatch[1]), text: sizeMatch[2] };
+            }
+            return { size: 2, text: s };
+          }).filter(Boolean);
+          if (!lines.length) return null;
+          return { align, lines };
+        })
+        .filter(Boolean);
+    }
+    const pages = parsePages(textSpec);
+    function getSizeFromScale(size) {
+      const sizes = [
+        'clamp(20px, 4vw, 40px)',
+        'clamp(40px, 6vw, 60px)',
+        'clamp(60px, 8vw, 80px)',
+        'clamp(80px, 10vw, 100px)',
+        'clamp(100px, 12vw, 120px)',
+        'clamp(120px, 14vw, 140px)',
+        'clamp(140px, 16vw, 170px)',
+        'clamp(170px, 18vw, 200px)',
+        'clamp(200px, 20vw, 225px)',
+        'clamp(225px, 22vw, 250px)'
+      ];
+      return sizes[Math.max(0, Math.min(9, size))];
+    }
+    function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+    async function showPages() {
+      let pageIndex = 0;
+      while (true) {
+        const { align, lines } = pages[pageIndex];
+        const existingLines = pageEl.querySelectorAll('.line.show');
+        if (existingLines.length > 0) {
+          existingLines.forEach(el => el.classList.remove('show'));
+          await sleep(300);
+        }
+        pageEl.innerHTML = '';
+        pageEl.dataset.pageIndex = String(pageIndex);
+        pageEl.className = align === 'C' ? 'mode-c' : '';
+        let containerEl = pageEl;
+        if (align === 'L') {
+          const group = document.createElement('div');
+          group.className = 'page-group';
+          pageEl.appendChild(group);
+          containerEl = group;
+        }
+        const lineEls = lines.map((lineObj, idx) => {
+          const div = document.createElement('div');
+          div.className = 'line';
+          div.textContent = lineObj.text;
+          div.style.textAlign = align === 'C' ? 'center' : 'left';
+          div.style.fontSize = getSizeFromScale(lineObj.size);
+          if (idx > 0 && lineObj.size <= 2) {
+            div.style.marginTop = 'max(2vh, 10px)';
+          }
+          containerEl.appendChild(div);
+          return div;
+        });
+        for (let i = 0; i < lineEls.length; i++) {
+          await sleep(i === 0 ? 50 : linePauseMs);
+          lineEls[i].classList.add('show');
+        }
+        pageIndex++;
+        const isLastPage = pageIndex >= pages.length;
+        const pauseTime = isLastPage ? pagePauseMs * 2 : pagePauseMs;
+        await sleep(pauseTime);
+        if (isLastPage) {
+          if (loopPages) pageIndex = 0; else break;
+        }
+      }
+    }
+    showPages().catch(console.error);
+  </script>
+</body>
+</html>
