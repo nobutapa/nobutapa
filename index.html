@@ -6,6 +6,7 @@
   <title>NOBUTAPA</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
+    :root { --text-scale: 1; }
     html, body {
       height: 100%; margin: 0; background: #000; overflow: hidden; color: #fff;
       -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
@@ -43,7 +44,10 @@
                    0 0 60px rgba(255, 90, 0, .16);
     }
     .line.show { opacity: 1; transform: none; filter: blur(0); }
-    @media (max-width: 480px) { #overlay { padding: 0 4vw; } }
+    @media (max-width: 480px) {
+      :root { --text-scale: 0.5; }
+      #overlay { padding: 0 4vw; }
+    }
   </style>
 </head>
 <body>
@@ -482,11 +486,18 @@
      * Texte : analyse de textSpec puis révélation page par page
      *   C/L = centré / aligné à gauche ; chiffre 1-9 = taille ; # = page ; | = ligne
      * ------------------------------------------------------------------------- */
+    // Tailles 1..9 : clamp(min, vw, max) multiplié par --text-scale (0.5 sur mobile).
     const SIZES = [
-      'clamp(20px,4vw,40px)',  'clamp(40px,6vw,60px)',  'clamp(60px,8vw,80px)',
-      'clamp(80px,10vw,100px)','clamp(100px,12vw,120px)','clamp(120px,14vw,140px)',
-      'clamp(140px,16vw,170px)','clamp(170px,18vw,200px)','clamp(200px,20vw,225px)',
-      'clamp(225px,22vw,250px)'
+      'calc(clamp(20px,4vw,40px) * var(--text-scale))',
+      'calc(clamp(40px,6vw,60px) * var(--text-scale))',
+      'calc(clamp(60px,8vw,80px) * var(--text-scale))',
+      'calc(clamp(80px,10vw,100px) * var(--text-scale))',
+      'calc(clamp(100px,12vw,120px) * var(--text-scale))',
+      'calc(clamp(120px,14vw,140px) * var(--text-scale))',
+      'calc(clamp(140px,16vw,170px) * var(--text-scale))',
+      'calc(clamp(170px,18vw,200px) * var(--text-scale))',
+      'calc(clamp(200px,20vw,225px) * var(--text-scale))',
+      'calc(clamp(225px,22vw,250px) * var(--text-scale))'
     ];
     const sizeScale = (s) => SIZES[Math.max(0, Math.min(9, s))];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
