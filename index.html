@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>NOBUTAPA — Nothing BUt TAlent and PAssion</title>
-  <meta name="description" content="NOBUTAPA: Nothing BUt TAlent and PAssion. Beyond agile, beyond software craftsmanship, beyond vibe coding — a software philosophy arguing that talent and passion, not tools or methods, are what truly build great software." />
+  <title>NOBUTAPA Manifesto — Nothing BUt TAlent and PAssion</title>
+  <meta name="description" content="Great software starts with talent and passion. Tools, methods and AI amplify them. They cannot replace them. The NOBUTAPA Manifesto by Jérôme Leleu." />
   <meta name="author" content="Jérôme Leleu" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://www.nobutapa.dev/" />
@@ -14,8 +14,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="NOBUTAPA" />
   <meta property="og:url" content="https://www.nobutapa.dev/" />
-  <meta property="og:title" content="NOBUTAPA — Nothing BUt TAlent and PAssion" />
-  <meta property="og:description" content="Beyond agile, beyond software craftsmanship, beyond vibe coding — talent and passion are what truly build great software." />
+  <meta property="og:title" content="NOBUTAPA Manifesto — Nothing BUt TAlent and PAssion" />
+  <meta property="og:description" content="Great software starts with talent and passion. Tools, methods and AI amplify them. They cannot replace them." />
   <meta property="og:image" content="https://www.nobutapa.dev/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -23,8 +23,8 @@
   <meta property="og:locale" content="en_US" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="NOBUTAPA — Nothing BUt TAlent and PAssion" />
-  <meta name="twitter:description" content="Beyond agile, beyond software craftsmanship, beyond vibe coding — talent and passion are what truly build great software." />
+  <meta name="twitter:title" content="NOBUTAPA Manifesto — Nothing BUt TAlent and PAssion" />
+  <meta name="twitter:description" content="Great software starts with talent and passion. Tools, methods and AI amplify them. They cannot replace them." />
   <meta name="twitter:image" content="https://www.nobutapa.dev/assets/og-image.png" />
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -59,611 +59,194 @@
   }
   </script>
   <style>
-    :root { --text-scale: 1; }
-    html, body {
-      height: 100%; margin: 0; background: #000; overflow: hidden; color: #fff;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    :root {
+      color-scheme: light;
+      --ink: #35251f;
+      --muted-ink: #715844;
+      --accent: #8c3f2f;
     }
-    #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
-    #overlay {
-      position: fixed; inset: 0; display: flex;
-      align-items: flex-start; justify-content: center;
-      pointer-events: none; padding: 0 6vw;
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(12px, 2vh, 24px) 20px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+      background: #0b1340;
+      background-image: linear-gradient(180deg,
+        #0b1340 0%, #4b2a78 28%, #b8466a 46%,
+        #ff7a1e 60%, #ffd277 68%, #2a6fb0 69%, #0c2a52 100%);
+      background-attachment: fixed;
     }
-    /* Halo sombre derrière le texte pour la lisibilité sur le ciel/soleil */
-    #page {
-      flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
-      gap: max(3.5vh, 18px); max-width: 94vw;
-      background: radial-gradient(ellipse 62% 58% at center,
-        rgba(8, 4, 24, 0.42) 0%, rgba(8, 4, 24, 0.16) 55%, rgba(8, 4, 24, 0) 80%);
+    .parchment {
+      position: relative;
+      width: min(100%, 780px);
+      flex-shrink: 0;
+      margin: auto;
+      padding: clamp(32px, 6vw, 72px) clamp(24px, 7vw, 80px) 28px;
+      border: 1px solid #b78e53;
+      background-color: #f1dfb8;
+      background-image:
+        radial-gradient(ellipse at 0% 0%, #b8874933, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, #ad784533, transparent 55%),
+        radial-gradient(ellipse at 50% 30%, #fff8e2b3, transparent 75%),
+        repeating-linear-gradient(0deg, #79522d04 0 1px, transparent 1px 4px);
+      box-shadow: 0 24px 80px #08091e66, inset 0 0 60px #9b642022;
     }
-    .page-group {
-      display: flex; flex-direction: column; align-items: flex-start;
-      gap: max(3.5vh, 18px); max-width: 100%;
+    .parchment::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid #9b714433;
+      pointer-events: none;
     }
-    .line {
-      opacity: 0; transform: translateY(16px) scale(0.99); filter: blur(7px);
-      transition: opacity .75s cubic-bezier(.2, .7, .2, 1),
-                  transform .75s cubic-bezier(.2, .7, .2, 1),
-                  filter .75s ease;
-      font-family: "Big Caslon", "Bodoni 72", "Didot", ui-serif, Georgia, "Times New Roman", serif;
-      font-weight: 900; text-align: center; line-height: 1.08; letter-spacing: .02em;
-      color: transparent;
-      background-image: linear-gradient(176deg, #fff7d0 0%, #ffe585 24%, #ffc23a 50%, #ff9a1f 74%, #9c5404 100%);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-stroke: var(--sw, 2px) #9a120a; paint-order: stroke fill;
-      text-shadow: 0 2px 8px rgba(255, 170, 40, .45),
-                   0 0 24px rgba(255, 110, 0, .35),
-                   0 0 60px rgba(255, 90, 0, .16);
+    header { text-align: center; }
+    .eyebrow {
+      margin: 0 0 18px;
+      font-family: system-ui, sans-serif;
+      font-size: 10px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--muted-ink);
     }
-    .line.show { opacity: 1; transform: none; filter: blur(0); }
-    /* Contenu textuel indexable et lu par les lecteurs d'écran, retiré du rendu visuel.
-       Ne pas utiliser display:none / visibility:hidden : cela le retirerait aussi de
-       l'arbre d'accessibilité. */
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
-      overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: normal;
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+    h1 span {
+      display: block;
+      margin-top: 8px;
+      font-style: italic;
+      font-size: .72em;
+      letter-spacing: -.025em;
+    }
+    .meaning {
+      margin: 22px 0 0;
+      font-size: clamp(15px, 2.6vw, 18px);
+      color: var(--muted-ink);
+      line-height: 1.6;
+    }
+    .meaning strong { font-weight: normal; color: var(--accent); }
+    .divider {
+      width: 96px;
+      height: 1px;
+      margin: 30px auto;
+      background: #8c3f2f66;
       border: 0;
     }
+    .preamble {
+      margin: 0 0 28px;
+      font-size: 16px;
+      line-height: 1.65;
+      text-align: center;
+      color: var(--muted-ink);
+      font-style: italic;
+    }
+    .declaration {
+      margin: 0 0 28px;
+      text-align: center;
+      font-size: clamp(23px, 3.6vw, 30px);
+      line-height: 1.4;
+      color: var(--accent);
+    }
+    .body-copy p {
+      margin: 0 0 22px;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .body-copy strong { font-weight: bold; }
+    .closing {
+      margin: 30px 0 0;
+      font-size: clamp(21px, 3vw, 25px);
+      line-height: 1.55;
+      text-align: center;
+      font-style: italic;
+    }
+    footer {
+      margin-top: 32px;
+      padding-top: 22px;
+      border-top: 1px solid #9b714433;
+      text-align: center;
+      color: var(--muted-ink);
+    }
+    .signature { margin: 0; font-size: 14px; line-height: 1.6; }
+    .easter-egg {
+      display: inline-flex;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+      color: var(--muted-ink);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .easter-egg:hover { color: var(--accent); }
+    .easter-egg:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+    @media screen and (min-width: 700px) and (max-height: 900px) {
+      .parchment { padding: 20px 48px 12px; }
+      .eyebrow { margin-bottom: 10px; }
+      h1 { font-size: 42px; }
+      h1 span { display: inline; margin-top: 0; }
+      .meaning { margin-top: 10px; font-size: 16px; line-height: 1.4; }
+      .divider { margin: 12px auto; }
+      .preamble { margin-bottom: 12px; line-height: 1.5; }
+      .declaration { margin-bottom: 16px; font-size: 24px; line-height: 1.3; }
+      .body-copy p { margin-bottom: 10px; font-size: 17px; line-height: 1.5; }
+      .closing { margin-top: 12px; font-size: 21px; line-height: 1.4; }
+      footer { margin-top: 12px; padding-top: 8px; }
+      .easter-egg { margin-top: 0; }
+    }
     @media (max-width: 480px) {
-      :root { --text-scale: 0.4; }
-      #overlay { padding: 0 4vw; }
+      body { padding: 18px 12px; }
+      .parchment { padding: 38px 26px 22px; }
+      .parchment::before { inset: 8px; }
+      .eyebrow { letter-spacing: .16em; }
+      .body-copy p { font-size: 17px; line-height: 1.65; }
+      .preamble { font-size: 15px; }
+    }
+    @media print {
+      body { display: block; min-height: 0; padding: 0; background: white; }
+      .parchment { width: 100%; border: 0; box-shadow: none; background: white; }
+      .parchment::before, .easter-egg { display: none; }
     }
   </style>
 </head>
 <body>
-  <main class="sr-only">
-    <h1>NOBUTAPA — Nothing BUt TAlent and PAssion</h1>
-    <p>
-      Beyond traditional and agile approaches, beyond software craftsmanship, beyond vibe
-      coding: NOBUTAPA stands for <strong>NOthing BUt TAlent and PAssion</strong>.
-    </p>
-    <p>
-      It is a gentle jab at everyone who believes that great software comes from tools,
-      methodologies, frameworks or AI alone. Processes help, tools help, AI helps — but they
-      are multipliers, not engines. Hand the finest toolchain to someone with neither talent
-      nor passion and you still get mediocre software; hand a plain text editor to someone
-      who has both and you get something worth using.
-    </p>
-    <p>
-      Talent is what lets an engineer see the simple solution hiding behind the complicated
-      one. Passion is what makes them care enough to keep looking for it. Everything else —
-      Scrum, TDD, clean code, pair programming, copilots and agents — only amplifies whatever
-      is already there. That is the whole philosophy: hire for talent, cultivate passion, and
-      let the tools be tools.
-    </p>
-    <p>A software philosophy by Jérôme Leleu.</p>
+  <main class="parchment">
+    <header>
+      <p class="eyebrow">A software philosophy</p>
+      <h1>NOBUTAPA <span>Manifesto</span></h1>
+      <p class="meaning"><strong>NO</strong>thing <strong>BU</strong>t <strong>TA</strong>lent and <strong>PA</strong>ssion</p>
+    </header>
+    <hr class="divider" />
+    <p class="preamble">Beyond agile. Beyond software craftsmanship.<br />Beyond vibe coding.</p>
+    <p class="declaration">Great software starts with people.<br />With talent. With passion.</p>
+    <div class="body-copy">
+      <p>Processes help. Tools help. AI helps.<br /><strong>They are multipliers, not engines.</strong></p>
+      <p>The best toolchain or project method cannot make up for a lack of talent and passion.</p>
+      <p><strong>Talent</strong> finds the simple solution behind the complicated one. <strong>Passion</strong> cares enough to keep looking.</p>
+      <p>Scrum, TDD, clean code, pair programming, copilots and agents amplify what is already there. They cannot replace it.</p>
+    </div>
+    <p class="closing">Let the tools be tools.<br />Trust talent. Cultivate passion.</p>
+    <footer>
+      <p class="signature">A software philosophy by Jérôme Leleu.</p>
+      <a class="easter-egg" href="index0.html" target="_blank" rel="noopener noreferrer"
+         aria-label="Discover the original animated demo (opens in a new tab)"
+         title="A little nostalgia (opens in a new tab)">;-)</a>
+    </footer>
   </main>
-  <noscript>
-    <p style="color:#ffc23a;font-family:Georgia,serif;padding:2rem;text-align:center">
-      NOBUTAPA — NOthing BUt TAlent and PAssion. Beyond traditional/agile approaches, beyond
-      software craftsmanship, beyond vibe coding.
-    </p>
-  </noscript>
-  <canvas id="scene" aria-hidden="true"></canvas>
-  <!-- Texte décoratif animé : le contenu équivalent est dans <main class="sr-only">. -->
-  <div id="overlay" aria-hidden="true">
-    <div id="page"></div>
-  </div>
-  <script>
-    "use strict";
-
-    /* ---------------------------------------------------------------------------
-     * Configuration
-     * ------------------------------------------------------------------------- */
-    const linePauseMs = 1000;
-    const pagePauseMs = 5000;
-    const loopPages  = true;
-    const textSpec   = "C3Beyond traditional/agile approaches,|beyond software craftsmanship,|beyond vibe coding...#C6Embrace the|7NOBUTAPA|6philosophy#L7NOthing|7BUt|7TAlent &|7PAssion ;-)";
-
-    /* ---------------------------------------------------------------------------
-     * Utilitaires
-     * ------------------------------------------------------------------------- */
-    const rand  = (a, b) => a + Math.random() * (b - a);
-    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    const jitter = (i) => Math.sin(i * 12.9898) * 0.5;        // pseudo-aléa stable (pas de scintillement)
-
-    /* ---------------------------------------------------------------------------
-     * Canvas + géométrie de la scène (recalculée au resize)
-     * ------------------------------------------------------------------------- */
-    const canvas = document.getElementById('scene');
-    const ctx = canvas.getContext('2d');
-    let W = 0, H = 0, DPR = 1, view = {}, terrace = [], clouds = [], mountains = [];
-
-    function resize() {
-      W = Math.floor(window.innerWidth);
-      H = Math.floor(window.innerHeight);
-      DPR = clamp(window.devicePixelRatio || 1, 1, 2);
-      canvas.width = Math.floor(W * DPR);
-      canvas.height = Math.floor(H * DPR);
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-
-      const sunR = Math.min(W, H) * 0.095;
-      view = {
-        horizon: H * 0.50,          // ligne de mer
-        deck:    H * 0.72,          // haut du ponton en pavés
-        sunX:    W * 0.5,
-        sunY:    H * 0.50 - sunR * 0.4,   // soleil affleurant l'horizon (moitié basse masquée par la mer)
-        sunR
-      };
-      terrace = makeTerrace();
-      clouds = makeClouds();
-      mountains = makeMountains();
-    }
-    window.addEventListener('resize', resize);
-
-    /* ---------------------------------------------------------------------------
-     * Générateurs procéduraux (exécutés au resize)
-     * ------------------------------------------------------------------------- */
-
-    // Texture de surface des pavés : courts traits horizontaux/diagonaux, plus larges vers l'avant.
-    function makeTerrace() {
-      const a = [], top = view.deck, span = H - top, n = Math.floor(W * span * 0.00010);
-      for (let i = 0; i < n; i++) {
-        const y = rand(top, H);
-        const p = (y - top) / span;                // 0 (loin) -> 1 (près)
-        const len = rand(8, 15) + p * 22;
-        const x = rand(0, W);
-        const g = 150 + Math.floor(rand(0, 90));
-        a.push({ x1: x, y1: y, x2: x + len, y2: y + rand(-0.06, 0.06) * len, w: 0.7 + p * 2 + rand(0, 0.5), g, al: 0.05 + rand(0, 0.08) });
-      }
-      return a;
-    }
-
-    // Nuages dérivant de gauche à droite, teintés sunset (violet dessus, chaud dessous).
-    function makeClouds() {
-      const a = [], n = Math.round(5 + W / 420);
-      for (let i = 0; i < n; i++) {
-        a.push({
-          x0: rand(-W * 0.2, W), y: rand(H * 0.03, H * 0.36),
-          s: rand(0.6, 1.8), v: rand(0.004, 0.012) * (0.6 + rand(0, 1))
-        });
-      }
-      return a;
-    }
-
-    // Silhouettes de montagnes/falaises de chaque côté, basses vers le centre (libèrent le soleil).
-    function makeMountains() {
-      const { horizon } = view;
-      const build = (x0, x1) => {
-        const seg = 10, pts = [];
-        for (let i = 0; i <= seg; i++) {
-          const base = (1 - i / seg) * H * 0.11 + H * 0.02;       // plus haut côté extérieur
-          pts.push({ x: x0 + (x1 - x0) * (i / seg), y: horizon - base * (0.5 + Math.random() * 0.9) });
-        }
-        return { x0, x1, pts };
-      };
-      return [build(0, W * 0.34), build(W * 0.66, W)];
-    }
-
-    /* ---------------------------------------------------------------------------
-     * Oiseau (antic d'IK+) : traverse le ciel de temps en temps
-     * ------------------------------------------------------------------------- */
-    const bird = { active: false, x: 0, y: 0, dir: 1, sp: 0, flap: 0, next: 5 + Math.random() * 9 };
-
-    function updateBird(dt) {
-      if (!bird.active) {
-        bird.next -= dt;
-        if (bird.next <= 0) {
-          bird.active = true;
-          bird.dir = Math.random() < 0.5 ? 1 : -1;
-          bird.x = bird.dir > 0 ? -40 : W + 40;
-          bird.y = rand(H * 0.10, H * 0.30);
-          bird.sp = rand(70, 130);
-        }
-      } else {
-        bird.x += bird.dir * bird.sp * dt;
-        bird.flap += dt * 10;
-        if ((bird.dir > 0 && bird.x > W + 50) || (bird.dir < 0 && bird.x < -50)) {
-          bird.active = false;
-          bird.next = 7 + Math.random() * 13;
-        }
-      }
-    }
-
-    function drawBird() {
-      if (!bird.active) return;
-      const w = 16, f = Math.sin(bird.flap);
-      ctx.save();
-      ctx.strokeStyle = 'rgba(18, 10, 30, 0.8)';
-      ctx.lineWidth = 2.2; ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(bird.x - w, bird.y - f * 4);
-      ctx.quadraticCurveTo(bird.x - w / 2, bird.y + 4 - f * 2, bird.x, bird.y);
-      ctx.quadraticCurveTo(bird.x + w / 2, bird.y + 4 - f * 2, bird.x + w, bird.y - f * 4);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    /* ---------------------------------------------------------------------------
-     * Dessin de la scène
-     * ------------------------------------------------------------------------- */
-
-    function drawSky() {
-      const g = ctx.createLinearGradient(0, 0, 0, view.horizon);
-      g.addColorStop(0,    '#0b1340');
-      g.addColorStop(0.40, '#4b2a78');
-      g.addColorStop(0.70, '#b8466a');
-      g.addColorStop(0.88, '#ff7a1e');
-      g.addColorStop(1,    '#ffd277');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, view.horizon);
-    }
-
-    // Soleil avec halo, disque dégradé et fines bandes horizontales (effet raster d'IK+).
-    function drawSun() {
-      const { sunX, sunY, sunR } = view;
-      const glow = ctx.createRadialGradient(sunX, sunY, sunR * 0.6, sunX, sunY, sunR * 2.6);
-      glow.addColorStop(0,   'rgba(255, 235, 140, 0.70)');
-      glow.addColorStop(0.4, 'rgba(255, 160, 60, 0.40)');
-      glow.addColorStop(1,   'rgba(255, 110, 0, 0.00)');
-      ctx.fillStyle = glow;
-      ctx.beginPath(); ctx.arc(sunX, sunY, sunR * 2.6, 0, Math.PI * 2); ctx.fill();
-
-      const disc = ctx.createRadialGradient(sunX, sunY - sunR * 0.2, sunR * 0.1, sunX, sunY, sunR);
-      disc.addColorStop(0,   '#fffdf2');
-      disc.addColorStop(0.6, '#fff3b8');
-      disc.addColorStop(1,   '#ffcf5a');
-      ctx.fillStyle = disc;
-      ctx.beginPath(); ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2); ctx.fill();
-
-      ctx.save();
-      ctx.beginPath(); ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2); ctx.clip();
-      const bands = 7;
-      for (let i = 0; i < bands; i++) {
-        const by = sunY - sunR + (i + 0.5) * (2 * sunR / bands);
-        ctx.fillStyle = `rgba(255, 150, 40, ${(0.09 + 0.10 * Math.abs(Math.sin(i * 1.7))).toFixed(3)})`;
-        ctx.fillRect(sunX - sunR, by - sunR * 0.06, 2 * sunR, sunR * 0.12);
-      }
-      ctx.restore();
-    }
-
-    function drawMountains() {
-      const { horizon } = view;
-      for (const m of mountains) {
-        ctx.beginPath();
-        ctx.moveTo(m.x0, horizon);
-        for (const p of m.pts) ctx.lineTo(p.x, p.y);
-        ctx.lineTo(m.x1, horizon);
-        ctx.closePath();
-        const g = ctx.createLinearGradient(0, horizon - H * 0.12, 0, horizon);
-        g.addColorStop(0, '#241a3e'); g.addColorStop(1, '#3a2a5c');
-        ctx.fillStyle = g; ctx.fill();
-        // lisière supérieure cueillant le couchant
-        ctx.strokeStyle = 'rgba(255, 140, 80, 0.18)'; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(m.x0, horizon);
-        for (const p of m.pts) ctx.lineTo(p.x, p.y); ctx.stroke();
-      }
-    }
-
-    function drawClouds(t) {
-      for (const c of clouds) {
-        const wrap = W + 500;
-        let x = (c.x0 + c.v * t * W) % wrap; x -= 250;
-        drawCloud(x, c.y, c.s);
-      }
-    }
-
-    function drawCloud(cx, cy, s) {
-      const r = 26 * s;
-      const parts = [[-2.2, 0.2, 1.1, 0.7], [-1.0, -0.2, 1.4, 0.9], [0.2, -0.3, 1.6, 1.0], [1.6, 0.0, 1.1, 0.7], [0.8, 0.4, 1.0, 0.6]];
-      const g = ctx.createLinearGradient(0, cy - r, 0, cy + r);
-      g.addColorStop(0,   'rgba(90, 70, 120, 0.55)');
-      g.addColorStop(0.6, 'rgba(180, 120, 150, 0.45)');
-      g.addColorStop(1,   'rgba(255, 170, 110, 0.50)');
-      ctx.save();
-      ctx.globalAlpha = 0.85; ctx.fillStyle = g;
-      ctx.beginPath();
-      for (const [dx, dy, rx, ry] of parts) ctx.ellipse(cx + dx * r, cy + dy * r, rx * r, ry * r, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 0.12; ctx.fillStyle = '#000';
-      ctx.beginPath(); ctx.ellipse(cx, cy + 0.6 * r, 2.8 * r, 0.5 * r, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-    }
-
-    // Mer + reflet solaire scintillant en colonne (l'élément signature d'IK+)
-    function drawSea(t) {
-      const { horizon, deck } = view;
-      const g = ctx.createLinearGradient(0, horizon, 0, deck);
-      g.addColorStop(0,   '#2a6fb0');
-      g.addColorStop(0.5, '#1a4f8a');
-      g.addColorStop(1,   '#0c2a52');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, horizon, W, deck - horizon);
-
-      // ondulations horizontales
-      ctx.save();
-      ctx.globalCompositeOperation = 'soft-light';
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)'; ctx.lineWidth = 1;
-      for (let y = horizon + 5; y < deck - 2; y += 9) {
-        const p = (y - horizon) / (deck - horizon);
-        ctx.beginPath();
-        for (let x = 0; x <= W; x += 8) {
-          const yy = y + Math.sin(x * 0.02 + t * (0.8 + p)) * 3 * (1 + p);
-          if (x === 0) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
-        }
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      drawReflection(t);
-    }
-
-    function drawReflection(t) {
-      const { horizon, deck, sunX, sunR } = view;
-      const span = deck - horizon, step = 4;
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      for (let y = horizon; y < deck; y += step) {
-        const p = (y - horizon) / span;
-        const w = sunR * (0.6 + 2.4 * p);                                   // s'évase vers l'avant
-        const amp = 4 + 26 * p;
-        const wob = Math.sin(y * 0.06 + t * 1.6) * amp + Math.sin(y * 0.13 - t * 2.2) * amp * 0.4;
-        const a = (0.42 * (1 - p) + 0.10) * (0.75 + 0.25 * Math.sin(y * 0.5 + t * 3));
-        ctx.fillStyle = `rgba(255, 232, 110, ${clamp(a, 0, 1).toFixed(3)})`;
-        ctx.fillRect(sunX - w + wob, y, w * 2, step - 1);                   // step-1 : léger interstice = facettes
-      }
-      ctx.restore();
-    }
-
-    // Ponton en pavés gris : dégradé, texture, grille de perspective, lisière et lueur chaude.
-    function drawDeck() {
-      const { deck } = view;
-      const g = ctx.createLinearGradient(0, deck, 0, H);
-      g.addColorStop(0,   '#c4c9cf');
-      g.addColorStop(0.5, '#7c828a');
-      g.addColorStop(1,   '#393e45');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, deck, W, H - deck);
-
-      // lueur chaude du couchant sur l'arrière du ponton
-      const warm = ctx.createLinearGradient(0, deck, 0, deck + (H - deck) * 0.4);
-      warm.addColorStop(0, 'rgba(255, 175, 95, 0.12)'); warm.addColorStop(1, 'rgba(255, 175, 95, 0)');
-      ctx.fillStyle = warm; ctx.fillRect(0, deck, W, (H - deck) * 0.4);
-
-      // lisière mer/ponton
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.20)'; ctx.fillRect(0, deck, W, 2);
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';       ctx.fillRect(0, deck + 2, W, 2);
-
-      // texture de surface
-      ctx.lineCap = 'round';
-      for (const s of terrace) {
-        ctx.strokeStyle = `rgba(${s.g}, ${s.g}, ${s.g}, ${s.al.toFixed(3)})`;
-        ctx.lineWidth = s.w;
-        ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      }
-
-      drawPavingGrid(deck);
-
-      // légère lumière rasante côté soleil
-      const lg = ctx.createLinearGradient(0, deck, W * 0.35, H);
-      lg.addColorStop(0, 'rgba(255, 255, 255, 0.05)'); lg.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      ctx.fillStyle = lg; ctx.fillRect(0, deck, W, H - deck);
-    }
-
-    // Grille de pavés en perspective : joints diagonaux convergeant vers l'horizon + rangées horizontales.
-    function drawPavingGrid(deck) {
-      const vpX = view.sunX, vpY = view.horizon;
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)'; ctx.lineWidth = 1;
-      const cols = Math.max(8, Math.round(W / 90));
-      for (let i = 0; i <= cols; i++) drawRayTo((i / cols) * W, H, vpX, vpY, deck);
-
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)';
-      const rows = 12;
-      for (let i = 1; i <= rows; i++) {
-        const y = deck + Math.pow(i / rows, 1.25) * (H - deck);
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-      }
-    }
-
-    function drawRayTo(x0, y0, vx, vy, deckY) {
-      const dy = vy - y0;                                   // < 0
-      const t = clamp((deckY - y0) / dy, 0, 1);             // abscisse où la droite atteint le haut du ponton
-      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + (vx - x0) * t, y0 + dy * t); ctx.stroke();
-    }
-
-    // Arche en bois : deux piliers (section 3D, veines du bois), poutre double, caractères chinois, ombres.
-    function drawGate() {
-      const { deck } = view;
-      const w = Math.max(30, W * 0.05);
-      const x1 = W * 0.33, x2 = W * 0.67 - w;
-      const baseY = deck + (H - deck) * 0.10;
-      const topY = H * 0.28;
-
-      // ombres portées des piliers sur le ponton
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
-      const sh = H * 0.06;
-      for (const [lx, rx] of [[x1, x1 + w + 8], [x2 - 8, x2 + w]]) {
-        ctx.beginPath();
-        ctx.moveTo(lx, baseY); ctx.lineTo(rx, baseY);
-        ctx.lineTo(rx + sh, baseY + sh * 0.5); ctx.lineTo(lx + sh, baseY + sh * 0.5);
-        ctx.closePath(); ctx.fill();
-      }
-
-      drawPillar(x1, w, topY, baseY, 0);
-      drawPillar(x2, w, topY, baseY, 100);
-      drawBeam(x1, x2, w, topY);
-      drawPillarLabels(x1, x2, w, topY, baseY);
-    }
-
-    function drawPillar(x, w, topY, baseY, seed) {
-      const h = baseY - topY, off = Math.max(6, w * 0.18), dir = seed ? -1 : 1;
-      // renforcement latéral (épaisseur)
-      ctx.fillStyle = '#160c05';
-      ctx.beginPath();
-      ctx.moveTo(x + (seed ? 0 : w), topY);
-      ctx.lineTo(x + (seed ? 0 : w) + dir * off, topY - 4);
-      ctx.lineTo(x + (seed ? 0 : w) + dir * off, baseY - 4);
-      ctx.lineTo(x + (seed ? 0 : w), baseY);
-      ctx.closePath(); ctx.fill();
-      // face avant
-      const g = ctx.createLinearGradient(x, 0, x + w, 0);
-      g.addColorStop(0, '#2a160a'); g.addColorStop(0.5, '#4a2a13'); g.addColorStop(1, '#341c0d');
-      ctx.fillStyle = g; ctx.fillRect(x, topY, w, h);
-      // veines du bois + filet de lumière
-      ctx.save(); ctx.beginPath(); ctx.rect(x, topY, w, h); ctx.clip();
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)'; ctx.lineWidth = 1;
-      const lines = Math.max(3, Math.round(w / 9));
-      for (let i = 1; i < lines; i++) {
-        const gx = x + i * w / lines + jitter(i + seed) * 2;
-        ctx.beginPath(); ctx.moveTo(gx, topY); ctx.lineTo(gx + jitter(i + seed + 50) * 3, baseY); ctx.stroke();
-      }
-      ctx.fillStyle = 'rgba(255, 200, 140, 0.06)'; ctx.fillRect(x + w * 0.25, topY, w * 0.12, h);
-      ctx.restore();
-      // chapiteau et base
-      ctx.fillStyle = '#5c3618'; ctx.fillRect(x - 3, topY - 6, w + 6, 8);
-      ctx.fillStyle = '#3a2010'; ctx.fillRect(x - 3, topY + 2, w + 6, 3);
-      ctx.fillStyle = '#241308'; ctx.fillRect(x - 4, baseY - 10, w + 8, 12);
-    }
-
-    function drawBeam(x1, x2, w, topY) {
-      const left = x1 - 6, right = x2 + w + 6;
-      const bh = Math.max(10, H * 0.014), by = topY + Math.max(6, H * 0.01);
-      const g = ctx.createLinearGradient(0, by, 0, by + bh);
-      g.addColorStop(0, '#5a3417'); g.addColorStop(0.5, '#3a200f'); g.addColorStop(1, '#231208');
-      ctx.fillStyle = g; ctx.fillRect(left, by, right - left, bh);
-      ctx.fillStyle = '#160c05'; ctx.fillRect(left, by + bh, right - left, 4);   // liste de face
-      const uby = by - bh * 0.7 - 4;                                              // poutre haute (trim)
-      ctx.fillStyle = '#4a2a13'; ctx.fillRect(left + 6, uby, right - left - 12, bh * 0.6);
-      ctx.fillStyle = '#160c05'; ctx.fillRect(left + 6, uby + bh * 0.6, right - left - 12, 3);
-    }
-
-    function drawPillarLabels(x1, x2, w, topY, baseY) {
-      ctx.save();
-      ctx.fillStyle = '#f4e4b8';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.55)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 1;
-      const fs = Math.max(13, (baseY - topY) * 0.075);
-      ctx.font = `${fs}px "Hiragino Mincho ProN", "Songti SC", "STKaiTi", serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const top = topY + Math.max(10, H * 0.012), bot = baseY - Math.max(12, H * 0.025);
-      vlabel('武道精神仁義礼智信', x1 + w / 2, top, bot);
-      vlabel('礼義仁智信忠孝勇',   x2 + w / 2, top, bot);
-      ctx.restore();
-    }
-
-    function vlabel(text, cx, top, bot) {
-      const step = (bot - top) / (text.length + 1);
-      for (let i = 0; i < text.length; i++) ctx.fillText(text[i], cx, top + (i + 1) * step);
-    }
-
-    /* ---------------------------------------------------------------------------
-     * Boucle d'animation
-     * ------------------------------------------------------------------------- */
-    function drawScene(t) {
-      drawSky();
-      drawSun();
-      drawMountains();
-      drawClouds(t);
-      drawSea(t);
-      drawDeck();
-      drawGate();
-      drawBird();
-    }
-
-    let lastTs = performance.now(), startTs = lastTs;
-    function loop(ts) {
-      const dt = Math.min(0.05, (ts - lastTs) / 1000); lastTs = ts;
-      updateBird(dt);
-      drawScene((ts - startTs) / 1000);
-      requestAnimationFrame(loop);
-    }
-    resize();
-    requestAnimationFrame(loop);
-
-    /* ---------------------------------------------------------------------------
-     * Texte : analyse de textSpec puis révélation page par page
-     *   C/L = centré / aligné à gauche ; chiffre 1-9 = taille ; # = page ; | = ligne
-     * ------------------------------------------------------------------------- */
-    // Tailles 1..9 : clamp(min, vw, max) multiplié par --text-scale (0.5 sur mobile).
-    const SIZES = [
-      'calc(clamp(20px,4vw,40px) * var(--text-scale))',
-      'calc(clamp(40px,6vw,60px) * var(--text-scale))',
-      'calc(clamp(60px,8vw,80px) * var(--text-scale))',
-      'calc(clamp(80px,10vw,100px) * var(--text-scale))',
-      'calc(clamp(100px,12vw,120px) * var(--text-scale))',
-      'calc(clamp(120px,14vw,140px) * var(--text-scale))',
-      'calc(clamp(140px,16vw,170px) * var(--text-scale))',
-      'calc(clamp(170px,18vw,200px) * var(--text-scale))',
-      'calc(clamp(200px,20vw,225px) * var(--text-scale))',
-      'calc(clamp(225px,22vw,250px) * var(--text-scale))'
-    ];
-    const sizeScale = (s) => SIZES[Math.max(0, Math.min(9, s))];
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-    function parsePages(spec) {
-      return spec.split('#').map((raw) => {
-        raw = raw.trim();
-        if (!raw) return null;
-        const align = raw[0].toUpperCase();
-        if (align !== 'C' && align !== 'L') { console.warn('Page ignorée : marqueur L/C manquant'); return null; }
-        const lines = raw.slice(1).trimStart().split('|').map((s) => {
-          s = s.trim();
-          if (!s) return null;
-          const m = s.match(/^([0-9])(.*)$/);
-          return m ? { size: +m[1], text: m[2] } : { size: 2, text: s };
-        }).filter(Boolean);
-        return lines.length ? { align, lines } : null;
-      }).filter(Boolean);
-    }
-
-    const pageEl = document.getElementById('page');
-    const pages = parsePages(textSpec);
-
-    // Positionne le bloc texte selon le nombre de lignes et la taille : centré sur anchorY,
-    // remonté s'il déborde, jamais collé au bord haut.
-    let currentHost = null;
-    function positionPage() {
-      if (!currentHost) return;
-      const vh = window.innerHeight, h = currentHost.offsetHeight;
-      const anchorY = 0.43 * vh, minTop = 0.07 * vh, minBottom = 0.20 * vh;
-      pageEl.style.marginTop = Math.max(minTop, Math.min(anchorY - h / 2, vh - h - minBottom)) + 'px';
-    }
-    window.addEventListener('resize', positionPage);
-
-    async function showPages() {
-      let i = 0;
-      while (true) {
-        const { align, lines } = pages[i];
-        const shown = pageEl.querySelectorAll('.line.show');
-        if (shown.length) { shown.forEach((e) => e.classList.remove('show')); await sleep(320); }
-
-        pageEl.innerHTML = '';
-        const host = align === 'L'
-          ? Object.assign(document.createElement('div'), { className: 'page-group' })
-          : pageEl;
-        if (host !== pageEl) pageEl.appendChild(host);
-
-        const els = lines.map((ln, idx) => {
-          const d = document.createElement('div');
-          d.className = 'line';
-          d.textContent = ln.text;
-          d.style.textAlign = align === 'C' ? 'center' : 'left';
-          d.style.fontSize = sizeScale(ln.size);
-          d.style.setProperty('--sw', (0.6 + ln.size * 0.28).toFixed(2) + 'px');
-          if (idx > 0 && ln.size <= 2) d.style.marginTop = 'max(2vh, 10px)';
-          host.appendChild(d);
-          return d;
-        });
-
-        currentHost = host;
-        positionPage();
-        requestAnimationFrame(positionPage);
-
-        for (let k = 0; k < els.length; k++) {
-          await sleep(k === 0 ? 60 : linePauseMs);
-          els[k].classList.add('show');
-        }
-
-        i++;
-        const last = i >= pages.length;
-        await sleep(last ? pagePauseMs * 2 : pagePauseMs);
-        if (last) { if (loopPages) i = 0; else break; }
-      }
-    }
-
-    showPages().catch(console.error);
-  </script>
 </body>
 </html>
